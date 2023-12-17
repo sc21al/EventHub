@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if title %}
+    <title>{{ title }}</title>
+    {% else %}
+    <title>No title</title>
+    {% endif %}
+    <!-- Bootstrap stylesheet for styling -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    {% block styles %}{% endblock %}
+    <!-- Bootstrap and JQuery scripts and JavaScript libraries -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {% block js %}
+    {% endblock %}
+    <!-- Cookie consent script for GDPR compliance -->
+    <link rel="stylesheet" type="text/css"
+        href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+    <script>
+        window.addEventListener("load", function () {
+            window.cookieconsent.initialise({
+                "palette": {
+                    "popup": {
+                        "background": "#eaf7f7",
+                        "text": "#5c7291"
+                    },
+                    "button": {
+                        "background": "#56cbdb",
+                        "text": "#ffffff"
+                    }
+                },
+                "content": {
+                    "message": "This website uses cookies to ensure you get the best experience on our website.",
+                    "dismiss": "Got it!"
+                }
+            })
+        });
+    </script>
+</head>
+
+<body>
+    <!-- Navbar -->
+    {% include 'navbar.html' %}
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <!-- Container for flash messages with margin-top -->
+        <div class="container mt-3">
+            {% for category, message in messages %}
+            <!-- Alert box for each message with the corresponding category -->
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+        {% block content %}
+        <!-- Main content -->
+        {% endblock %}
+    </main>
+    <footer></footer>
+</body>
+
+</html>

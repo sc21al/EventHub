@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+<!-- Main container for the create event form -->
+<div class="container mt-4">
+    <!-- Centers the form on the page -->
+    <div class="row justify-content-center">
+        <!-- Defines the width of the form area on large screens -->
+        <div class="col-lg-8">
+            <!-- Card styling for the form with a border and shadow for depth -->
+            <div class="card border-secondary shadow">
+                <!-- Title of the form -->
+                <div class="card-header text-center">
+                    <h1>Edit Event</h1>
+                </div>
+
+                <!-- The body of the card contains the form elements -->
+                <div class="card-body">
+                     <!-- The form for submitting a new event, directs to the create event route upon submission -->
+                    <form action="{{ url_for('events_views.edit_event', event_id=event.id) }}" method="post">
+                        <!-- CSRF token for form security -->
+                        {{ form.hidden_tag() }}
+
+                        <!-- Input field for the event title -->
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Event Title:</label>
+                            {{ form.title(class="form-control", id="title", required=True) }}
+                        </div>
+
+                        <!-- Category -->
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Event Category:</label>
+                            {{ form.category(class="form-control", id="category", required=True) }}
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Event Description:</label>
+                            {{ form.description(class="form-control", id="description", required=True) }}
+                        </div>
+
+                        <!-- Event Date -->
+                        <div class="mb-3">
+                            <label for="date" class="form-label">Event Date:</label>
+                            {{ form.date(class="form-control", id="date", required=True) }}
+                        </div>
+
+                        <!-- Start Time -->
+                        <div class="mb-3">
+                            <label for="start_time" class="form-label">Start Time:</label>
+                            {{ form.start_time(class="form-control", id="start_time", required=True) }}
+                        </div>
+
+                        <!-- End Time -->
+                        <div class="mb-3">
+                            <label for="end_time" class="form-label">End Time:</label>
+                            {{ form.end_time(class="form-control", id="end_time", required=True) }}
+                        </div>
+
+                         <!-- Location -->
+                        <div class="mb-3">
+                            <label for="location" class="form-label">Event Location:</label>
+                            {{ form.location(class="form-control", id="location", required=True) }}
+                        </div>
+
+                         <!-- Update button -->
+                        <div class="text-center">
+                            <input type="submit" class="btn btn-primary" value="Update Event">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+<!-- The navigation bar with baby blue background color -->
+<nav class="navbar navbar-expand-lg" style="background-color: #89CFF0;">
+    <!-- Use a container-fluid for full width and padding -->
+    <div class="container-fluid">
+
+        <!-- Navbar brand link with dark gray text -->
+        <a class="navbar-brand" href="{{ url_for('general_views.home') }}" style="color: #505050;">EventHub</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+
+            <!-- Button for toggling navigation bar on smaller screens -->
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="navbar-nav">
+                <!-- Navigation links -->
+                <a class="nav-link" href="{{ url_for('events_views.explore_events') }}" style="color: #505050;">Explore
+                    Events</a>
+                <a class="nav-link" href="{{ url_for('events_views.create_event') }}" style="color: #505050;">Create
+                    Event</a>
+                <a class="nav-link" href="{{ url_for('events_views.my_events') }}" style="color: #505050;">My Events</a>
+            </div>
+            
+            <div class="navbar-nav ms-auto"> <!-- This div will align the login/signup to the right -->
+                {% if current_user.is_authenticated %}
+                <!-- Check if user is logged in -->
+                <a class="nav-link" href="{{ url_for('user_views.update_profile') }}"
+                    style="color: #505050;">Profile</a>
+                <a class="nav-link" href="{{ url_for('userauth_views.logout') }}" style="color: #505050;">Logout</a>
+                {% else %}
+                <!-- If user is not logged in, show login and signup links -->
+                <a class="nav-link" href="{{ url_for('userauth_views.login') }}" style="color: #505050;">Login</a>
+                <a class="nav-link" href="{{ url_for('userauth_views.signup') }}" style="color: #505050;">Sign Up</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>

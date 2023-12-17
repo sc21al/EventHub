@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center">Manage Events</h2>
+    <div class="row">
+        {% for event in events %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ event.title }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ event.date }}</h6>
+                    <p class="card-text">{{ event.description }}</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ url_for('admin.edit_event', event_id=event.id) }}" class="btn btn-primary btn-sm">Edit</a>
+                    <form action="{{ url_for('admin.delete_event', event_id=event.id) }}" method="post" class="d-inline">
+                        <input type="submit" value="Delete" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?');">
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <p class="text-center">No events available.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

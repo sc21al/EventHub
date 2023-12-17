@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='css/user.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- Form title -->
+<h1>Log in</h1>
+<!-- Sign in form -->
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+        <!-- User name box -->
+        {{ form.username.label(class="form-label") }} 
+        {{ form.username(class="form-control", id="user-name", placeholder="Enter user name", required="required", maxlength="50") }}        {% if form.username.errors %}
+            <div class="alert alert-danger">{{ form.username.errors[0] }}</div>
+        {% endif %}
+
+        <!-- Password box -->
+        {{ form.password.label(class="form-label") }}
+        {{ form.password(class="form-control", id="password", placeholder="Enter password", required="required", minlength="8") }}        {% if form.password.errors %}
+            <div class="alert alert-danger">{{ form.password.errors[0] }}</div>
+        {% endif %}
+
+        <!-- Sign in button -->
+        {{ form.submit(class="btn btn-success w-100", value="LOG IN") }}
+
+        <!-- Links -->
+        <div class="links">
+            <a href="{{ url_for('userauth_views.signup') }}">Join Event Hub</a>
+        </div>
+    </div>
+</form>
+{% endblock %}

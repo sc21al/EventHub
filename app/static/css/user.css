@@ -1,0 +1,82 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2; 
+}
+/* Form Title */
+h1 {
+  text-align: center;
+  margin-top: 50px;
+  color: #505050; 
+}
+/* Form Styling */
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: #D3D3D3;
+  padding: 20px;
+  border-radius: 7px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); 
+}
+/* Form Labels */
+label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #505050; 
+}
+/* Input Fields */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border-radius: 7px;
+  border: 1px solid #ccc;
+  margin-bottom: 15px; 
+}
+/* Submit Button */
+input[type="submit"] {
+  background-color: #89CFF0; /* Baby blue color for the sign-in button */ 
+  color: #505050;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+input[type="submit"]:hover {
+  background-color: #71B2D4; 
+}
+/* Links */
+.links {
+  text-align: center;
+  margin-top: 15px; 
+}
+/* Links */
+.links a {
+  color: #333; 
+  text-decoration: underline; 
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.links a:hover {
+  color: #111;
+  text-decoration: none;
+}
+/* Link Separation */
+.links span {
+  color: #333; /* Dark*/
+}
+.d-flex.justify-content-end {
+  justify-content: space-between;
+  align-items: center;
+}

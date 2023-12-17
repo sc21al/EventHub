@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='css/user.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Update Profile</h1>
+    <form action="{{ url_for('user_views.update_profile') }}" method="POST">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+            <label for="username" class="form-label">User Name</label>
+            {{ form.username(class="form-control", id="username", required="required", minlength="3", maxlength="50") }}
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            {{ form.email(class="form-control", id="email", required="required", type="email") }}
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            {{ form.password(class="form-control", id="password", minlength="8",
+            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$") }}
+        </div>
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary me-2">Save Changes</button>
+        </div>
+    </form>
+
+    <!-- Separate form for deleting account -->
+    <form action="{{ url_for('user_views.delete_account') }}" method="POST" id="delete-account-form"
+        onsubmit="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">
+        {{ form.hidden_tag() }}
+        <button type="submit" class="btn btn-danger me-2">Delete Account</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block js %}
+<!-- Including JavaScript file for like and join functionality -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/Validations.js') }}"></script>
+{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/user.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- Form title -->
+<div class="form-container">
+    <h1 class="text-center">Sign up</h1>
+    <!-- Sign up form -->
+    <form id="signup-form" action="{{ url_for('userauth_views.signup') }}" method="post">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            <!-- User name box -->
+            {{ form.username.label(class="form-label", for="user-name") }}
+            {{ form.username(class="form-control box", id="user-name", placeholder="Enter user name",
+            required="required", minlength="3", maxlength="50") }}
+            {% if form.username.errors %}
+            <div class="alert alert-danger">{{ form.username.errors[0] }}</div>
+            {% endif %}
+
+            <!-- Email box -->
+            {{ form.email.label(class="form-label", for="email") }}
+            {{ form.email(class="form-control box", id="email", placeholder="Enter email", required="required",
+            type="email") }}
+            {% if form.email.errors %}
+            <div class="alert alert-danger">{{ form.email.errors[0] }}</div>
+            {% endif %}
+
+            <!-- Password box -->
+            {{ form.password.label(class="form-label", for="password") }}
+            {{ form.password(class="form-control box", id="password", placeholder="Enter password", required="required",
+            minlength="8", pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$") }} {% if form.password.errors %}
+            <div class="alert alert-danger">{{ form.password.errors[0] }}</div>
+            {% endif %}
+
+            <!-- Sign up button -->
+            {{ form.submit(class="btn btn-primary w-100", value="SIGN UP") }}
+
+            <!-- Link for those who already have an account -->
+            <div class="text-center links">
+                <p>Already have an account? <a href="{{ url_for('userauth_views.login') }}">Log in</a></p>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

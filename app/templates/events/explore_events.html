@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block js %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/like_join.js') }}"></script>
+{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/events.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center">Explore Events</h1>
+    <div class="row">
+
+        {% for event in events %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+
+                <!-- Card Body with Event Details -->
+                <div class="card-body text-center">
+                    <h2 class="card-title">{{ event.title }}</h2>
+                    <p class="event-info-title">Category: {{ event.category | capitalize }}</p>
+                    <div class="event-info-title">Date: <span class="text-muted">{{ event.date.strftime('%Y-%m-%d')
+                            }}</span></div>
+                    <div class="event-info-title">Description:</div>
+                    <p class="card-text">{{ event.description }}</p>
+                </div>
+                <div class="card-footer text-center">
+                    <small class="d-block">Start: {{ event.start_time.strftime('%H:%M') }}</small>
+                    <small class="d-block">End: {{ event.end_time.strftime('%H:%M') }}</small>
+                    <small class="d-block">Location: {{ event.location }}</small>
+                    <small class="d-block">Created by: {{ event.creator.username }}</small>
+                    <small class="d-block">Participants: <span id="participants-{{ event.id }}">{{
+                            event.participants.count() }}</span></small>
+                    <small class="d-block">Likes: <span id="likes-{{ event.id }}">{{ event.liked_by.count()
+                            }}</span></small>
+                </div>
+
+                <!-- Event Action Buttons -->
+                <div class="btn-group w-100 mt-2" role="group" aria-label="Event Actions">
+
+                    <!-- Join Button -->
+                    <button data-event-id="{{ event.id }}" onclick="joinEvent(this)"
+                        class="btn {{ 'btn-join-custom' if current_user in event.participants else 'btn-warning' }} rounded custom-btn-width">
+                        {{ 'Unjoin' if current_user in event.participants else 'Join' }}
+                    </button>
+
+                    <!-- Like Button -->
+                    <button data-event-id="{{ event.id }}" onclick="likeEvent(this)"
+                        class="btn {{ 'btn-purple' if current_user in event.liked_by else 'btn-like-custom' }} rounded custom-btn-width">
+                        {{ 'Liked' if current_user in event.liked_by else 'Like' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <p class="text-center">No events available.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

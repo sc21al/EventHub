@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <!-- Website Introduction -->
+    <div class="row">
+        <div class="col text-center">
+            <h1 class="display-3 fw-bold">
+                {% if user.is_authenticated %}
+                Welcome, {{ user.username }} to EventHub
+                {% else %}
+                Welcome to EventHub
+                {% endif %}
+            </h1>
+            <p class="lead fs-4">Discover and share events that matter to you.</p>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <div class="row my-5">
+        <div class="col text-center">
+            <h2 class="fw-bold fs-2">Who We Are</h2>
+            <p class="fs-5">EventHub is a platform for connecting people through live experiences. From local community
+                gatherings to large-scale conferences, we bring people together to celebrate shared passions and create
+                memorable moments.</p>
+        </div>
+    </div>
+
+    <!-- Dynamic Events Display -->
+    <div class="row">
+        <div class="col">
+            <h2 class="text-center mb-4 fw-bold fs-2">Explore Events</h2>
+            <!-- Conditional Button Based on Authentication Status -->
+            <div class="text-center mb-4">
+                {% if current_user.is_authenticated %}
+                <a href="{{ url_for('events_views.explore_events') }}" class="btn btn-primary">Explore Events</a>
+                {% else %}
+                <a href="{{ url_for('userauth_views.login') }}" class="btn btn-secondary">Log In</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

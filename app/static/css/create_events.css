@@ -1,0 +1,22 @@
+.container {
+    background-color: #D3D3D3; /* Light gray background */
+    border-radius: 7px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    max-width: 400px; /* Match the width of login and signup pages */
+    margin: auto; /* Center the container */
+    padding: 20px;
+}
+
+.card-header, .card-body {
+    background-color: #f2f2f2; /* Light background */
+    color: #505050; /* Dark gray text */
+}
+
+.btn-primary {
+    background-color: #89CFF0; /* Baby blue color */
+    color: #505050; /* Dark gray text */
+}
+
+.btn-primary:hover {
+    background-color: #71B2D4; /* Darker shade for hover */
+}

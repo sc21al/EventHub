@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+
+{% block js %}
+<!-- Including JavaScript file for like and join functionality -->
+<script type="text/javascript" src="{{ url_for('static', filename='js/like_join.js') }}"></script>
+{% endblock %}
+
+{% block styles %}
+<!-- Including CSS styles specific to event pages -->
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/events.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- Container for all event content ('Created Evenets' - Joined Events' - 'Recommended Events') -->
+<div class="container mt-4">
+    <h1 class="text-center">My Events</h1>
+    <div class="row">
+
+        <!-- Section for Created Events -->
+        <div class="col-lg-6 text-center">
+            <h2>Created Events</h2>
+            <div class="row">
+
+                {% for event in created_events %}
+                <!-- Event Card Start -->
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <!-- Event details start -->
+                        <div class="card-body">
+
+                            <!-- ... Existing Content ... -->
+                            <h3 class="card-title">{{ event.title }}</h3>
+                            <p class="event-info-title">Category: {{ event.category | capitalize }}</p>
+                            <div class="event-info-title">Date: <span
+                                    class="text-muted">{{event.date.strftime('%Y-%m-%d') }}</span></div>
+                            <div class="event-info-title">Description:</div>
+                            <p class="card-text">{{ event.description }}</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="d-block">Start: {{ event.start_time.strftime('%H:%M') }}</small>
+                            <small class="d-block">End: {{ event.end_time.strftime('%H:%M') }}</small>
+                            <small class="d-block">Location: {{ event.location }}</small>
+                            <small class="d-block">Created by: {{ event.creator.username }}</small>
+                            <small class="d-block">Participants: <span id="participants-{{ event.id }}">{{
+                                    event.participants.count() }}</span></small>
+                            <small class="d-block">Likes: <span id="likes-{{ event.id }}">{{
+                                    event.liked_by.count()}}</span></small>
+                        </div>
+                        <!-- Event details end -->
+
+                        <!-- Event actions start -->
+                        <div class="btn-group w-100 mt-2" role="group" aria-label="Event Actions">
+                            <div class="btn-col">
+
+                                <!-- Edit button -->
+                                <a href="{{ url_for('events_views.edit_event', event_id=event.id) }}"
+                                    class="btn event-action-btn text-dark custom-btn-width btn-edit-custom">Edit</a>
+
+                                <!-- Delete button -->
+                                <form action="{{ url_for('events_views.delete_event', event_id=event.id) }}"
+                                    method="post" class="d-inline-block">
+                                    <button type="submit"
+                                        class="btn btn-delete-custom text-dark event-action-btn custom-btn-width">Delete</button>
+                                </form>
+                            </div>
+
+                            <!-- Join button -->
+                            <div class="btn-group w-100 d-flex justify-content-center mt-2" role="group"
+                                aria-label="Event Actions">
+                                <button data-event-id="{{ event.id }}" onclick="joinEvent(this)"
+                                    class="btn {{ 'btn-join-custom' if current_user in event.participants else 'btn-warning' }} rounded custom-btn-width text-dark">
+                                    {{ 'Unjoin' if current_user in event.participants else 'Join' }}
+                                </button>
+
+                                <!-- Like button -->
+                                <button data-event-id="{{ event.id }}" onclick="likeEvent(this)"
+                                    class="btn {{ 'btn-purple' if current_user in event.liked_by else 'btn-like-custom' }} rounded custom-btn-width text-dark">
+                                    {{ 'Liked' if current_user in event.liked_by else 'Like' }}
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Event actions end -->
+                    </div>
+                </div>
+                <!-- Event card end-->
+
+                {% else %}
+                <!-- No Events Placeholder Start -->
+                <div class="col-12">
+                    <p class="text-center">No created events available</p>
+                </div>
+                <!-- No Events Placeholder End -->
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Section for Joined Events -->
+        <div class="col-lg-6 text-center">
+            <h2>Joined Events</h2>
+            <div class="row">
+
+                {% for event in joined_events %}
+                <!-- Event Card Start -->
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+
+                        <!-- Event details start -->
+                        <div class="card-body">
+
+                            <!-- Exising content -->
+                            <h3 class="card-title">{{ event.title }}</h3>
+                            <p class="event-info-title">Category: {{ event.category | capitalize }}</p>
+                            <div class="event-info-title">Date: <span
+                                    class="text-muted">{{event.date.strftime('%Y-%m-%d') }}</span></div>
+                            <div class="event-info-title">Description:</div>
+                            <p class="card-text">{{ event.description }}</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="d-block">Start: {{ event.start_time.strftime('%H:%M') }}</small>
+                            <small class="d-block">End: {{ event.end_time.strftime('%H:%M') }}</small>
+                            <small class="d-block">Location: {{ event.location }}</small>
+                            <small class="d-block">Created by: {{ event.creator.username }}</small>
+                            <small class="d-block">Participants: <span
+                                    id="participants-{{ event.id }}">{{event.participants.count() }}</span></small>
+                            <small class="d-block">Likes: <span id="likes-{{ event.id }}">{{
+                                    event.liked_by.count()}}</span></small>
+                        </div>
+                        <!-- Event details end -->
+
+                        <!-- Event actions start -->
+                        <!-- Continer -->
+                        <div class="btn-group w-100 d-flex justify-content-center mt-2" role="group"
+                            aria-label="Event Actions">
+
+                            <!-- Join button-->
+                            <button data-event-id="{{ event.id }}" onclick="joinEvent(this)"
+                                class="btn {{ 'btn-join-custom' if current_user in event.participants else 'btn-warning' }} rounded custom-btn-width text-dark">
+                                {{ 'Unjoin' if current_user in event.participants else 'Join' }}
+                            </button>
+
+                            <!-- Like button -->
+                            <button data-event-id="{{ event.id }}" onclick="likeEvent(this)"
+                                class="btn {{ 'btn-purple' if current_user in event.liked_by else 'btn-like-custom' }} rounded custom-btn-width text-dark">
+                                {{ 'Liked' if current_user in event.liked_by else 'Like' }}
+                            </button>
+                        </div>
+                        <!-- Event actions end -->
+                    </div>
+                </div>
+                <!-- Event card end-->
+
+                {% else %}
+                <!-- No Events Placeholder Start -->
+                <div class="col-12">
+                    <p class="text-center">No joined events available</p>
+                </div>
+                <!-- No Events Placeholder End -->
+                {% endfor %}
+            </div>
+        </div>
+        <!-- Joined events section end -->
+    </div>
+
+    <!-- Recommended events section start -->
+    <div class="row mt-4 justify-content-center">
+        <div class="col-12 text-center">
+            <h2>Recommended for You</h2>
+            <div class="row">
+
+                {% if recommended_event %}
+                <!-- Recommended event card start -->
+                <div class="col-md-6 mx-auto">
+
+                    <!-- Existin contaent ('Card of recommended event')-->
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h3 class="card-title">{{ recommended_event.title }}</h3>
+                            <p class="event-info-title">Category: {{ recommended_event.category | capitalize }}</p>
+                            <div class="event-info-title">Date: <span class="text-muted">{{
+                                    recommended_event.date.strftime('%Y-%m-%d') }}</span></div>
+                            <div class="event-info-title">Description:</div>
+                            <p class="card-text">{{ recommended_event.description }}</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="d-block">Start: {{ recommended_event.start_time.strftime('%H:%M') }}</small>
+                            <small class="d-block">End: {{ recommended_event.end_time.strftime('%H:%M') }}</small>
+                            <small class="d-block">Location: {{ recommended_event.location }}</small>
+                            <small class="d-block">Created by: {{ recommended_event.creator.username }}</small>
+                            <small class="d-block">Participants: <span
+                                    id="participants-{{ recommended_event.id }}">{{recommended_event.participants.count()
+                                    }}</span></small>
+                            <small class="d-block">Likes: <span
+                                    id="likes-{{ recommended_event.id }}">{{recommended_event.liked_by.count()
+                                    }}</span></small>
+                        </div>
+
+                        <!-- Join button for recommended event-->
+                        <div class="btn-group w-100 mt-2" role="group" aria-label="Event Actions">
+                            {% set is_participant = current_user in recommended_event.participants %}
+                            <button data-event-id="{{ recommended_event.id }}" onclick="joinEvent(this)"
+                                class="btn {{ 'btn-join-custom' if is_participant else 'btn-warning' }} rounded custom-btn-width text-dark">
+                                {{ 'Unjoin' if is_participant else 'Join' }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Recommended event card end -->
+
+                {% else %}
+                <!-- No Events Placeholder Start -->
+                <div class="col-12">
+                    <p class="text-center">No recommendations at the moment.</p>
+                </div>
+                <!-- No Events Placeholder End -->
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bottom space -->
+<div class="mb-5"></div>
+{% endblock %}
